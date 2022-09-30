@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="box">
+    <h2>Todo Update Page</h2>
+    <input type="text" id="title" placeholder="Title..." value="{{todo.title}}">
+    <textarea id="description" placeholder="Description...">{{todo.description}}</textarea>
+
+    <div class="sm-box">
+        {% if todo.complete == 1%}
+            <input type="checkbox" id="complete" checked>
+        {% else %}
+            <input type="checkbox" id="complete">
+        {% endif %}
+        <p>complete</p>
+
+        {% if todo.important == 1%}
+            <input type="checkbox" id="important" checked>
+        {% else %}
+            <input type="checkbox" id="important">
+        {% endif %}
+        <p>important</p>
+    </div>
+
+
+    <div class="btn-box">
+        <button type="submit" id="submit">update</button>
+    </div>
+</div>
+
+<script>
+
+    $( document ).ready(function() {
+        console.log();
+
+    });
+
+      // 버튼 눌렀을 때
+      $('#submit').click(function () {
+
+          let title = $('#title').val();
+          let description = $('#description').val();
+          let complete = $('#complete').is(":checked");
+          let important = $('#important').is(":checked");
+
+            $.ajax({
+                url: "/todo/api/update/{{todo.id}}",
+                data: {
+                    title:title,
+                    description:description,
+                    complete:complete,
+                    important:important,
+                },
+                method: "PATCH",
+                success: function (data){
+                    alert("Todo 수정 성공!");
+                    location.replace("/todo/detail/{{todo.id}}")
+                },
+                error:function (request, status, error){
+                    alert("Todo 수정 실패!");
+                },
+                complete: function (data) {
+                    //console.log("완료");
+                },
+            });
+      });
+
+</script>
+
+
+{% endblock %}

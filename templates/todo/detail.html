@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="box">
+
+
+    <a href="{% url 'todo:list' %}" style="color:#a19c9c;">back</a>
+
+    <h2>Todo Detail Page</h2>
+
+    {% if todo %}
+
+        <p class="list_title">{{todo.title}}</p>
+        <div class="des_wrap">
+            <p>{{todo.description}}</p>
+        </div>
+
+
+
+    <div style="display: flex; flex-direction: row;">
+        <a href="{% url 'todo:update' pk=todo.id %}">
+            <button type="submit">edit</button>
+        </a>
+
+        <div class="btn-box" style="margin-left:1rem;">
+            <button type="submit" id="delete-btn">delete</button>
+        </div>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+<script>
+// 버튼 눌렀을 때
+      $('#delete-btn').click(function () {
+
+            $.ajax({
+                url: "/todo/api/delete/{{todo.id}}",
+                data: {
+
+                },
+                method: "DELETE",
+                success: function (data){
+                    alert("Todo 삭제 성공!");
+                },
+                error:function (request, status, error){
+                    alert("Todo 삭제 실패!");
+                },
+                complete: function (data) {
+                    location.replace("/todo/list")
+                },
+            });
+      });
+
+</script>
+
+
+
+
+{% endblock %}

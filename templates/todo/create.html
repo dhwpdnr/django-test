@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+    <div class="box">
+        <h2>Todo Create Page</h2>
+        <input type="text" id="title" placeholder="Title...">
+        <textarea  id="description" placeholder="Description..."></textarea>
+
+        <div class="sm-box">
+            <input type="checkbox" id="complete">
+            <p>complete</p>
+
+            <input type="checkbox" id="important">
+            <p>important</p>
+        </div>
+
+        <div class="btn-box">
+            <button type="submit" id="submit">submit</button>
+        </div>
+
+    </div>
+
+<script>
+
+      // 버튼 눌렀을 때
+      $('#submit').click(function () {
+
+          let title = $('#title').val();
+          let description = $('#description').val();
+          let complete = $('#complete').is(":checked");
+          let important = $('#important').is(":checked");
+
+            console.log(title);
+
+            $.ajax({
+                url: "/todo/api/create/",
+                data: {
+                    title:title,
+                    description:description,
+                    complete:complete,
+                    important:important,
+                },
+                method: "POST",
+                success: function (data){
+                    alert("Todo 생성 성공!");
+                },
+                error:function (request, status, error){
+                    alert("Todo 생성 실패!");
+                },
+                complete: function (data) {
+                    location.replace("/todo/list/");
+                },
+            });
+      });
+
+</script>
+
+
+{% endblock %}
